@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aire IOT - Sensorrrrrr de ANAL DEL TIO BESTIAL</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="ligne_paginatejs-master/js/paginate.js"></script>
+    <link rel="stylesheet" href="ligne_paginatejs-master/css/paginate.css">
+</head>
+<style>
+    .myTable tr td {
+        border: 1px solid black;
+    }
+    
+    .contenedor {
+        text-align: center;
+        margin-left: 48%;
+    }
+</style>
+
+<body>
+    <h1 style="text-align: center;">DATOS SOBRE EL SENSOR MQ7</h1>
+    <div class="contenedor">
+        <table class="myTable" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>ID SENSOR</td>
+                <td>DATA</td>
+            </tr>
+        </table>
+    </div>
+    <script src="script.js"></script>
+
+    <div>
+        <h2>Grafico lineal de las mediciones</h2>
+        <canvas class="myChart"></canvas>
+    </div>
+
+    <script>
+        const lista = document.querySelector('.myTable')
+        let labels = [];
+        let id = [];
+        fetch("http://54.90.72.87:5000/all")
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(element => {
+                    let registros = document.createElement("tr")
+                    registros.innerHTML = `<td>${element.idsensor}</td> <td>${element.data}</td>`
+                    labels.push(element.data)
+                    id.push(element.idsensor)
+                    lista.appendChild(registros)
+                })
+            })
+        const ctx = document.querySelector('.myChart');
+        ctx.height = 100;
+
+        new Chart(ctx, {
+            type: 'line',
+            backgroundColor: [
+                'rgba(163,221,203,0.2)',
+                'rgba(232,233,161,0.2)',
+                'rgba(230,181,102,0.2)',
+                'rgba(229,112,126,0.2)',
+            ], // Color de fondo
+            borderColor: [
+                'rgba(163,221,203,1)',
+                'rgba(232,233,161,1)',
+                'rgba(230,181,102,1)',
+                'rgba(229,112,126,1)',
+            ], // Color del borde
+            data: {
+                labels: id,
+                datasets: [{
+                    label: 'Medición',
+                    data: labels,
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
