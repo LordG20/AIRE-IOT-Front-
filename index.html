@@ -9,84 +9,37 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="ligne_paginatejs-master/js/paginate.js"></script>
     <link rel="stylesheet" href="ligne_paginatejs-master/css/paginate.css">
+    <link rel="stylesheet" href="stile.css">
 </head>
-<style>
-    .myTable tr td {
-        border: 1px solid black;
-    }
-    
-    .contenedor {
-        text-align: center;
-        margin-left: 48%;
-    }
-</style>
 
-<body>
+<body style="background-color: bisque;">
     <h1 style="text-align: center;">DATOS SOBRE EL SENSOR MQ7</h1>
     <div class="contenedor">
-        <table class="myTable" cellpadding="0" cellspacing="0">
-            <tr>
-                <td>ID SENSOR</td>
-                <td>DATA</td>
-            </tr>
-        </table>
+        <div class="datagrid">
+            <table style="text-align: center;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>DATA</th>
+                        <th>FECHA Y HORA</th>
+                    </tr>
+                </thead>
+                <tbody class="myTable">
+                </tbody>
+            </table>
+        </div>
     </div>
-    <script src="script.js"></script>
-
+    <h2>Grafico lineal de las mediciones</h2>
     <div>
-        <h2>Grafico lineal de las mediciones</h2>
-        <canvas class="myChart"></canvas>
+        <canvas class="myChart" style="width: 500px; height: 500px"></canvas>
+    </div>
+    <h2>Grafico circular</h2>
+    <div>
+        <canvas class="myChart2" style="width: 500px; height: 500px"></canvas>
     </div>
 
-    <script>
-        const lista = document.querySelector('.myTable')
-        let labels = [];
-        let id = [];
-        fetch("http://54.90.72.87:5000/all")
-            .then(res => res.json())
-            .then(data => {
-                data.forEach(element => {
-                    let registros = document.createElement("tr")
-                    registros.innerHTML = `<td>${element.idsensor}</td> <td>${element.data}</td>`
-                    labels.push(element.data)
-                    id.push(element.idsensor)
-                    lista.appendChild(registros)
-                })
-            })
-        const ctx = document.querySelector('.myChart');
-        ctx.height = 100;
 
-        new Chart(ctx, {
-            type: 'line',
-            backgroundColor: [
-                'rgba(163,221,203,0.2)',
-                'rgba(232,233,161,0.2)',
-                'rgba(230,181,102,0.2)',
-                'rgba(229,112,126,0.2)',
-            ], // Color de fondo
-            borderColor: [
-                'rgba(163,221,203,1)',
-                'rgba(232,233,161,1)',
-                'rgba(230,181,102,1)',
-                'rgba(229,112,126,1)',
-            ], // Color del borde
-            data: {
-                labels: id,
-                datasets: [{
-                    label: 'Medición',
-                    data: labels,
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
